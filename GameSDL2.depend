@@ -1,0 +1,91 @@
+# depslib dependency file v1.0
+1743350421 source:c:\gamesdl2\function.cpp
+	"Function.h"
+
+1743382925 c:\gamesdl2\function.h
+	<windows.h>
+	<string>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<iostream>
+
+1743389659 source:c:\gamesdl2\main.cpp
+	<fstream>
+	"Function.h"
+	"Object.h"
+	"Map.h"
+	"Nhanvat.h"
+	"Timer.h"
+	"Explosion.h"
+	"Menu.h"
+	"Text.h"
+
+1743380247 c:\gamesdl2\object.h
+	<vector>
+	"Function.h"
+	"Object.h"
+
+1743385301 c:\gamesdl2\map.h
+	"Function.h"
+	"Object.h"
+
+1743388940 c:\gamesdl2\nhanvat.h
+	<vector>
+	"Function.h"
+	"Object.h"
+	"Explosion.h"
+
+1743391033 source:c:\gamesdl2\map.cpp
+	"Map.h"
+	"Function.h"
+
+1743388784 source:c:\gamesdl2\nhanvat.cpp
+	"Nhanvat.h"
+	"Map.h"
+	"Explosion.h"
+
+1743325228 source:c:\gamesdl2\object.cpp
+	"Object.h"
+
+1741151472 source:c:\gamesdl2\timer.cpp
+	"Timer.h"
+	"Function.h"
+
+1743325228 c:\gamesdl2\timer.h
+
+1742357293 source:c:\gamesdl2\bullet.cpp
+
+1742357293 c:\gamesdl2\bullet.h
+
+1743389168 source:c:\gamesdl2\explosion.cpp
+	"Explosion.h"
+
+1743388307 c:\gamesdl2\explosion.h
+	"Object.h"
+	"Nhanvat.h"
+
+1743353135 source:c:\gamesdl2\menu.cpp
+	"Menu.h"
+
+1743353135 c:\gamesdl2\menu.h
+	"Function.h"
+	"Object.h"
+
+1743350331 source:c:\gamesdl2\text.cpp
+	"Text.h"
+
+1743349237 c:\gamesdl2\text.h
+	"Function.h"
+	<string>
+	<SDL_ttf.h>
+
+1743352992 source:c:\gamesdl2\gameutilities.cpp
+	"GameUtilities.h"
+
+1743352931 c:\gamesdl2\gameutilities.h
+	"Function.h"
+	"Text.h"
+	"Nhanvat.h"
+	"Map.h"
+
