@@ -3,19 +3,19 @@
 
 #include "Object.h"
 #include "Nhanvat.h"
-
+#include "Music.h"
+class Nhanvat;
 class Explosion : public Object {
 public:
     Explosion();
     ~Explosion();
 
     bool LoadImg(std::string path, SDL_Renderer* screen);
-    void Show(SDL_Renderer* screen, int camera_x);
+    void Show(SDL_Renderer* screen, int camera_x, Music& music);
     void Update(); // Cập nhật vị trí vụ nổ
     void SetPosition(int x, int y);
     int GetXPos() const { return x_pos_e; }
-    void Reset();
-    void UpdateXPosition(int player_x);
+    void Reset(Nhanvat& player_pos_);
 
 private:
     int frame_;

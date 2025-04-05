@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1743350421 source:c:\gamesdl2\function.cpp
+1743822359 source:c:\gamesdl2\function.cpp
 	"Function.h"
 
-1743382925 c:\gamesdl2\function.h
+1743822359 c:\gamesdl2\function.h
 	<windows.h>
 	<string>
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
+	<SDL_mixer.h>
 	<iostream>
 
-1743389659 source:c:\gamesdl2\main.cpp
+1743832314 source:c:\gamesdl2\main.cpp
 	<fstream>
 	"Function.h"
 	"Object.h"
@@ -20,6 +21,7 @@
 	"Explosion.h"
 	"Menu.h"
 	"Text.h"
+	"Music.h"
 
 1743380247 c:\gamesdl2\object.h
 	<vector>
@@ -30,20 +32,24 @@
 	"Function.h"
 	"Object.h"
 
-1743388940 c:\gamesdl2\nhanvat.h
+1743736539 c:\gamesdl2\nhanvat.h
 	<vector>
 	"Function.h"
 	"Object.h"
 	"Explosion.h"
+	"Music.h"
+	"Map.h"
 
-1743391033 source:c:\gamesdl2\map.cpp
+1743825365 source:c:\gamesdl2\map.cpp
 	"Map.h"
 	"Function.h"
 
-1743388784 source:c:\gamesdl2\nhanvat.cpp
+1743736071 source:c:\gamesdl2\nhanvat.cpp
 	"Nhanvat.h"
 	"Map.h"
 	"Explosion.h"
+	<cstdlib>
+	<ctime>
 
 1743325228 source:c:\gamesdl2\object.cpp
 	"Object.h"
@@ -58,12 +64,13 @@
 
 1742357293 c:\gamesdl2\bullet.h
 
-1743389168 source:c:\gamesdl2\explosion.cpp
+1743761684 source:c:\gamesdl2\explosion.cpp
 	"Explosion.h"
 
-1743388307 c:\gamesdl2\explosion.h
+1743759122 c:\gamesdl2\explosion.h
 	"Object.h"
 	"Nhanvat.h"
+	"Music.h"
 
 1743353135 source:c:\gamesdl2\menu.cpp
 	"Menu.h"
@@ -72,7 +79,7 @@
 	"Function.h"
 	"Object.h"
 
-1743350331 source:c:\gamesdl2\text.cpp
+1743562294 source:c:\gamesdl2\text.cpp
 	"Text.h"
 
 1743349237 c:\gamesdl2\text.h
@@ -88,4 +95,13 @@
 	"Text.h"
 	"Nhanvat.h"
 	"Map.h"
+
+1743562423 c:\gamesdl2\music.h
+	<SDL.h>
+	<SDL_mixer.h>
+	<string>
+
+1743562675 source:c:\gamesdl2\music.cpp
+	"Music.h"
+	<iostream>
 

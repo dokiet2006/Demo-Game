@@ -1,4 +1,4 @@
-// Text.cpp
+
 #include "Text.h"
 
 Text::Text() : font_(nullptr) {}

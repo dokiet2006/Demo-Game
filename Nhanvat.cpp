@@ -1,6 +1,8 @@
 #include "Nhanvat.h"
 #include "Map.h"
 #include "Explosion.h"
+#include <cstdlib> // Để sử dụng rand()
+#include <ctime>   // Để khởi tạo seed cho rand()
 
 Nhanvat::Nhanvat()
 {
@@ -8,7 +10,7 @@ Nhanvat::Nhanvat()
     x_val = 0;
     y_val = 0;
     x_pos_ = 300;
-    y_pos_ = 300;
+    y_pos_ = 100;
     width_frame_ = 0;
     height_frame_ = 0;
     status_ = -1;
@@ -26,12 +28,23 @@ Nhanvat::~Nhanvat()
 {
     Free();
 }
-void Nhanvat::Reset() {
+void Nhanvat::Reset(const Map& map_data)
+{
+    static bool seeded = false;
+    if (!seeded)
+    {
+        srand(static_cast<unsigned>(time(0)));
+        seeded = true;
+    }
     frame_ = 0;
     x_val = 0;
     y_val = 0;
-    x_pos_ = 300; // Vị trí ban đầu
-    y_pos_ = 300; // Vị trí ban đầu
+
+    int max_random_x = map_data.max_x_ / 3;
+    x_pos_ = rand() % max_random_x;
+    if (x_pos_ < 0) x_pos_ = 0;
+
+    y_pos_ = 100; // Vị trí ban đầu
     width_frame_ = 0;
     height_frame_ = 0;
     status_ = -1;
@@ -107,48 +120,41 @@ void Nhanvat::show(SDL_Renderer* des)
 
 }
 
-void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
+void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen, Music& music)
 {
     if (events.type == SDL_KEYDOWN)
     {
         switch (events.key.keysym.sym)
         {
             case SDLK_d:
-                status_ = WALK_RIGHT;
-                input_type_.right_ = 1;
-                input_type_.left_ = 0;
-                input_type_.up_ = 0;
-                if(on_ground == true) LoadImg("img//player_right.png",screen);
-                else LoadImg("img//jum_right.png",screen);
-                break;
-            case SDLK_a:
-                status_ = WALK_LEFT;
-                input_type_.left_ = 1;
-                input_type_.right_ = 0;
-                input_type_.up_ = 0;
-                if(on_ground == true) LoadImg("img//player_left.png",screen);
-                else LoadImg("img//jum_left.png",screen);
-                break;
             case SDLK_RIGHT:
                 status_ = WALK_RIGHT;
                 input_type_.right_ = 1;
                 input_type_.left_ = 0;
                 input_type_.up_ = 0;
-                if(on_ground == true) LoadImg("img//player_right.png",screen);
-                else LoadImg("img//jum_right.png",screen);
+                if (on_ground == true) {
+                    LoadImg("img//player_right.png", screen);
+                } else {
+                    LoadImg("img//jum_right.png", screen);
+                }
                 break;
+            case SDLK_a:
             case SDLK_LEFT:
                 status_ = WALK_LEFT;
                 input_type_.left_ = 1;
                 input_type_.right_ = 0;
                 input_type_.up_ = 0;
-                if(on_ground == true) LoadImg("img//player_left.png",screen);
-                else LoadImg("img//jum_left.png",screen);
+                if (on_ground == true) {
+                    LoadImg("img//player_left.png", screen);
+                } else {
+                    LoadImg("img//jum_left.png", screen);
+                }
                 break;
             case SDLK_SPACE:
                 input_type_.jump_ = 1;
                 if(status_ == WALK_RIGHT) LoadImg("img//jum_right.png",screen);
                 else if(status_ == WALK_LEFT) LoadImg("img//jum_left.png",screen);
+                music.PlayJumpSound(); // Âm thanh nhảy
                 break;
             default:
                 break;
@@ -159,14 +165,10 @@ void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
         switch (events.key.keysym.sym)
         {
             case SDLK_d:
-                input_type_.right_ = 0;
-                break;
-            case SDLK_a:
-                input_type_.left_ = 0;
-                break;
             case SDLK_RIGHT:
                 input_type_.right_ = 0;
                 break;
+            case SDLK_a:
             case SDLK_LEFT:
                 input_type_.left_ = 0;
                 break;
@@ -182,11 +184,12 @@ void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen)
         if(events.button.button == SDL_BUTTON_RIGHT )
         {
             input_type_.jump_ = 1;
+            if (on_ground) music.PlayJumpSound();
         }
     }
 }
 
-void Nhanvat::DoPlayer(Map& map_data, Explosion& explosion)
+void Nhanvat::DoPlayer(Map& map_data, Explosion& explosion, Music& music)
 {
     x_val = 0;
     y_val += ROI_SPEED;
@@ -225,6 +228,7 @@ void Nhanvat::DoPlayer(Map& map_data, Explosion& explosion)
     CenterEntityOnMap(map_data);
 
 }
+
 void Nhanvat::CenterEntityOnMap(Map& map_data)
 {
     map_data.start_x_ = x_pos_ - (SCREEN_WIDTH / 2);
@@ -261,7 +265,7 @@ void Nhanvat::CheckMap(Map& map_data)
         {
             if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
             {
-                x_pos_ = x2*TILE_SIZE;
+                x_pos_ = x2 * TILE_SIZE;
                 x_pos_ -= width_frame_ + 1;
                 x_val = 0;
             }

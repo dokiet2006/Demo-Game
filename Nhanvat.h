@@ -5,11 +5,13 @@
 #include "Function.h"
 #include "Object.h"
 #include "Explosion.h"
+#include "Music.h"
+#include "Map.h"
 
-#define ROI_SPEED 1
+#define ROI_SPEED 4
 #define ROI_MAX 10
 #define PLAYER_SPEED 10
-#define PLAYER_JUMP_VAL 20
+#define PLAYER_JUMP_VAL 40
 
 class Explosion;
 class Nhanvat : public Object
@@ -26,17 +28,19 @@ public:
 
     bool LoadImg(std::string path, SDL_Renderer* screen);
     void show(SDL_Renderer* des);
-    void HandelInputAction(SDL_Event events, SDL_Renderer* screen);
+    void HandelInputAction(SDL_Event events, SDL_Renderer* screen, Music& music);
     void set_clips();
 
-    void DoPlayer(Map& map_data, Explosion& explosion);
+    void DoPlayer(Map& map_data, Explosion& explosion, Music& music);
     void CheckMap(Map& map_data);
     void SetMapXY(const int map_x, const int map_y) { map_x_ = map_x; map_y_ = map_y; }
     void CenterEntityOnMap(Map& map_data);
+
     bool IsDead(const Map& map_data) const ;
     bool IsDeadByExplosion(const Explosion& explosion) const;
-    void Reset();
 
+    void Reset(const Map& map_data);
+    int GetPos() const { return x_pos_;}
 
 private:
     float x_val;

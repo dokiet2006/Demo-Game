@@ -7,13 +7,14 @@
 #include "Explosion.h"
 #include "Menu.h"
 #include "Text.h"
+#include "Music.h"
 
 Object g_background;
 Object game_over_image;
 
 bool InitData() {
     bool success = true;
-    int ret = SDL_Init(SDL_INIT_VIDEO);
+    int ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     if (ret < 0) return false;
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
@@ -34,14 +35,21 @@ bool InitData() {
                 success = false;
             }
 
-            if (!game_over_image.LoadImg("img/gameover.png", g_screen)) {
+            // Khởi tạo SDL_mixer
+            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+            {
+                printf("Mix_OpenAudio failed: %s\n", Mix_GetError());
+                success = false;
+            }
+
+            if (!game_over_image.LoadImg("img/gameover.png", g_screen))
+            {
                 printf("Failed to load game over image!\n");
                 success = false;
             }
             game_over_image.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
     }
-
     std::ifstream highscore_file("highscore.txt");
     if (highscore_file.is_open()) {
         highscore_file >> g_high_score;
@@ -72,11 +80,18 @@ void close() {
     SDL_DestroyWindow(g_window);
     g_window = NULL;
     IMG_Quit();
+    Mix_CloseAudio(); // Giải phóng SDL_mixer
+    Mix_Quit();
     SDL_Quit();
 }
 
 int main(int argc, char* argv[]) {
     if (!InitData()) return -1;
+
+    Music music;
+    if (!music.Init() || !music.LoadSounds()) {
+        return -1;
+    }
 
     Text score_text;
     if (!score_text.LoadFont("Arial.ttf", 26)) {
@@ -90,6 +105,8 @@ int main(int argc, char* argv[]) {
 
     bool in_menu = true;
     int menu_choice = -1;
+
+    music.PlayMenuMusic(); // Phát nhạc menu
 
     while (in_menu) {
         while (SDL_PollEvent(&g_event) != 0) {
@@ -110,6 +127,9 @@ int main(int argc, char* argv[]) {
     }
 
     if (!LoadBackground()) return -1;
+
+    music.StopMusic();
+    music.PlayGameMusic(); // Phát nhạc game
 
     Timer fps_timer;
     GameMap game_map;
@@ -138,13 +158,15 @@ while (!is_quit) {
 
         if (game_over) {
             if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_SPACE) {
+                music.PlayRestartSound(); // Âm thanh restart
                 // Reset toàn bộ trạng thái game
                 game_over = false;
                 g_game_over = false;
                 game_restart = true;
+
             }
         } else {
-            p_player.HandelInputAction(g_event, g_screen);
+            p_player.HandelInputAction(g_event, g_screen,music);
         }
     }
 
@@ -154,7 +176,7 @@ while (!is_quit) {
         g_score = 0;
 
         // Reset player
-        p_player.Reset();
+        p_player.Reset(game_map.getMap());
         p_player.LoadImg("img//player_right.png", g_screen);
         p_player.set_clips();
 
@@ -162,8 +184,9 @@ while (!is_quit) {
         game_map.LoadMap("map/map01.dat");
 
         // Reset explosion
-        explosionEffect.Reset();
+        explosionEffect.Reset(p_player);
 
+        game_map.LoadMap("map/map01.dat");
 
         game_restart = false;
     }
@@ -177,13 +200,13 @@ while (!is_quit) {
 
         Map map_data = game_map.getMap();
         p_player.SetMapXY(map_data.start_x_, map_data.start_y_);
-        p_player.DoPlayer(map_data, explosionEffect);
+        p_player.DoPlayer(map_data, explosionEffect, music);
         p_player.show(g_screen);
 
         game_map.setMap(map_data);
         game_map.DrawMap(g_screen);
 
-        explosionEffect.Show(g_screen, map_data.start_x_);
+        explosionEffect.Show(g_screen, map_data.start_x_, music);
 
         // Hiển thị điểm số
         std::string score_str = "Score: " + std::to_string(g_score);
@@ -193,14 +216,28 @@ while (!is_quit) {
         score_text.RenderText(g_screen, high_score_str, 20, 50, text_color);
 
         // Kiểm tra game over
-        if (p_player.IsDead(map_data) || p_player.IsDeadByExplosion(explosionEffect)) {
+        if (p_player.IsDead(map_data) )
+        {
+            music.PlayFallSound();
             game_over = true;
-            if (g_score > g_high_score) {
+            if (g_score > g_high_score)
+            {
                 g_high_score = g_score;
                 SaveHighScore();
             }
         }
-    } else {
+        else if(p_player.IsDeadByExplosion(explosionEffect))
+        {
+            music.PlayCollisionSound(); // Âm thanh va chạm vụ nổ
+            game_over = true;
+            if (g_score > g_high_score)
+            {
+                    g_high_score = g_score;
+                    SaveHighScore();
+            }
+        }
+    }
+    else {
         // Hiển thị màn hình game over
         game_over_image.Render(g_screen);
 
@@ -215,7 +252,7 @@ while (!is_quit) {
 
         std::string restart_text = "Press SPACE to restart";
         score_text.RenderText(g_screen, restart_text,
-                            SCREEN_WIDTH / 2 - 100,
+                            SCREEN_WIDTH / 2 - 110,
                             SCREEN_HEIGHT / 2 + 230,
                             white_color);
     }
@@ -230,7 +267,7 @@ while (!is_quit) {
     }
 }
 
-
+    music.StopMusic();
     SaveHighScore();
     close();
     return 0;
