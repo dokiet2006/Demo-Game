@@ -2,16 +2,18 @@
 1743822359 source:c:\gamesdl2\function.cpp
 	"Function.h"
 
-1743822359 c:\gamesdl2\function.h
+1744421372 c:\gamesdl2\function.h
 	<windows.h>
 	<string>
+	<vector>
+	<algorithm>
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 	<iostream>
 
-1743832314 source:c:\gamesdl2\main.cpp
+1744421658 source:c:\gamesdl2\main.cpp
 	<fstream>
 	"Function.h"
 	"Object.h"
@@ -22,6 +24,7 @@
 	"Menu.h"
 	"Text.h"
 	"Music.h"
+	"Bot.h"
 
 1743380247 c:\gamesdl2\object.h
 	<vector>
@@ -32,24 +35,24 @@
 	"Function.h"
 	"Object.h"
 
-1743736539 c:\gamesdl2\nhanvat.h
+1744418110 c:\gamesdl2\nhanvat.h
 	<vector>
 	"Function.h"
 	"Object.h"
 	"Explosion.h"
 	"Music.h"
 	"Map.h"
+	"Bot.h"
 
-1743825365 source:c:\gamesdl2\map.cpp
+1743909200 source:c:\gamesdl2\map.cpp
 	"Map.h"
 	"Function.h"
 
-1743736071 source:c:\gamesdl2\nhanvat.cpp
+1744419853 source:c:\gamesdl2\nhanvat.cpp
 	"Nhanvat.h"
 	"Map.h"
 	"Explosion.h"
-	<cstdlib>
-	<ctime>
+	"Bot.h"
 
 1743325228 source:c:\gamesdl2\object.cpp
 	"Object.h"
@@ -64,7 +67,7 @@
 
 1742357293 c:\gamesdl2\bullet.h
 
-1743761684 source:c:\gamesdl2\explosion.cpp
+1744421357 source:c:\gamesdl2\explosion.cpp
 	"Explosion.h"
 
 1743759122 c:\gamesdl2\explosion.h
@@ -72,7 +75,7 @@
 	"Nhanvat.h"
 	"Music.h"
 
-1743353135 source:c:\gamesdl2\menu.cpp
+1744421486 source:c:\gamesdl2\menu.cpp
 	"Menu.h"
 
 1743353135 c:\gamesdl2\menu.h
@@ -96,12 +99,21 @@
 	"Nhanvat.h"
 	"Map.h"
 
-1743562423 c:\gamesdl2\music.h
+1743853380 c:\gamesdl2\music.h
 	<SDL.h>
 	<SDL_mixer.h>
 	<string>
 
-1743562675 source:c:\gamesdl2\music.cpp
+1743853313 source:c:\gamesdl2\music.cpp
 	"Music.h"
 	<iostream>
+
+1744421625 source:c:\gamesdl2\bot.cpp
+	"Bot.h"
+	"Nhanvat.h"
+	"Map.h"
+
+1744421625 c:\gamesdl2\bot.h
+	"Function.h"
+	"Object.h"
 

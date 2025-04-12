@@ -1,8 +1,7 @@
 #include "Nhanvat.h"
 #include "Map.h"
 #include "Explosion.h"
-#include <cstdlib> // Để sử dụng rand()
-#include <ctime>   // Để khởi tạo seed cho rand()
+#include "Bot.h"
 
 Nhanvat::Nhanvat()
 {
@@ -17,8 +16,6 @@ Nhanvat::Nhanvat()
     input_type_.left_ = 0;
     input_type_.right_ = 0;
     input_type_.jump_ = 0;
-    input_type_.down_ =0;
-    input_type_.up_ = 0;
     on_ground = false;
     map_x_ = 0;
     map_y_ = 0;
@@ -30,21 +27,15 @@ Nhanvat::~Nhanvat()
 }
 void Nhanvat::Reset(const Map& map_data)
 {
-    static bool seeded = false;
-    if (!seeded)
-    {
-        srand(static_cast<unsigned>(time(0)));
-        seeded = true;
-    }
     frame_ = 0;
     x_val = 0;
     y_val = 0;
 
-    int max_random_x = map_data.max_x_ / 3;
+    max_random_x = map_data.max_x_ / 3;
     x_pos_ = rand() % max_random_x;
     if (x_pos_ < 0) x_pos_ = 0;
 
-    y_pos_ = 100; // Vị trí ban đầu
+    y_pos_ = 100;
     width_frame_ = 0;
     height_frame_ = 0;
     status_ = -1;
@@ -117,7 +108,6 @@ void Nhanvat::show(SDL_Renderer* des)
 
         SDL_RenderCopy(des, p_object_, current_clip_, &renderQuad);
 
-
 }
 
 void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen, Music& music)
@@ -154,7 +144,7 @@ void Nhanvat::HandelInputAction(SDL_Event events, SDL_Renderer* screen, Music& m
                 input_type_.jump_ = 1;
                 if(status_ == WALK_RIGHT) LoadImg("img//jum_right.png",screen);
                 else if(status_ == WALK_LEFT) LoadImg("img//jum_left.png",screen);
-                music.PlayJumpSound(); // Âm thanh nhảy
+                music.PlayJumpSound();
                 break;
             default:
                 break;
@@ -202,12 +192,12 @@ void Nhanvat::DoPlayer(Map& map_data, Explosion& explosion, Music& music)
     if(input_type_.left_ == 1)
     {
         x_val -= PLAYER_SPEED;
-        g_score -= 10; // Giảm điểm khi di chuyển sang trái
+        g_score -= 10;
     }
     else if(input_type_.right_ == 1)
     {
         x_val += PLAYER_SPEED;
-        g_score += 10; // Tăng điểm khi di chuyển sang phải
+        g_score += 10;
     }
 
     if(input_type_.jump_ == 1)
@@ -253,20 +243,19 @@ void Nhanvat::CheckMap(Map& map_data)
     //  check ngang
     int height_min = ( height_frame_ < TILE_SIZE ) ? height_frame_ : TILE_SIZE;
 
-    x1 = (x_pos_ + x_val) / TILE_SIZE;
-    x2 = (x_pos_ + x_val + width_frame_ - 1) / TILE_SIZE;
+    x1 = (x_pos_ + OFFSET_X + x_val ) / TILE_SIZE;
+    x2 = (x_pos_ + x_val + width_frame_ - OFFSET_X - 1) / TILE_SIZE;
 
-    y1 = (y_pos_) / TILE_SIZE;
-    y2 = (y_pos_ + height_min - 1)/ TILE_SIZE;
+    y1 = (y_pos_ + OFFSET_Y) / TILE_SIZE;
+    y2 = (y_pos_ + height_min - OFFSET_Y - 1)/ TILE_SIZE;
 
     if(x1 >0  && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y)
     {
-        if(x_val > 0) // dang di chuyen sang phai
+        if(x_val > 0)
         {
             if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
             {
-                x_pos_ = x2 * TILE_SIZE;
-                x_pos_ -= width_frame_ + 1;
+                x_pos_ = x2 * TILE_SIZE - (width_frame_ + 1 - OFFSET_X);
                 x_val = 0;
             }
         }
@@ -274,19 +263,19 @@ void Nhanvat::CheckMap(Map& map_data)
         {
             if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y2][x1] != BLANK_TILE)
             {
-                x_pos_ = (x1 + 1) * TILE_SIZE;
+                x_pos_ = (x1 + 1) * TILE_SIZE - OFFSET_X;
                 x_val = 0;
             }
         }
     }
-    //check doc
+
 
     int width_min = width_frame_ < TILE_SIZE ? width_frame_ : TILE_SIZE;
-    x1 = (x_pos_) / TILE_SIZE;
-    x2 = (x_pos_ + width_min ) / TILE_SIZE;
+    x1 = (x_pos_ + OFFSET_X) / TILE_SIZE;
+    x2 = (x_pos_ + width_min - OFFSET_X - 1) / TILE_SIZE;
 
-    y1 = (y_pos_ + y_val) / TILE_SIZE;
-    y2 = (y_pos_ + y_val + height_frame_ - 1) / TILE_SIZE;
+    y1 = (y_pos_ + y_val + OFFSET_Y) / TILE_SIZE;
+    y2 = (y_pos_ + y_val - OFFSET_Y + height_frame_ - 1) / TILE_SIZE;
 
     if(x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y)
     {
@@ -294,8 +283,7 @@ void Nhanvat::CheckMap(Map& map_data)
         {
             if(map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
             {
-                y_pos_ = y2 * TILE_SIZE;
-                y_pos_ -= (height_frame_ +1);
+                y_pos_ = y2 * TILE_SIZE - (height_frame_ + 1 - OFFSET_Y);
                 y_val = 0;
                 on_ground = true;
             }
@@ -304,7 +292,7 @@ void Nhanvat::CheckMap(Map& map_data)
         {
             if( map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2] != BLANK_TILE)
             {
-                y_pos_ = (y1 + 1) * TILE_SIZE;
+                y_pos_ = (y1 + 1) * TILE_SIZE - OFFSET_Y;
                 y_val = 0;
             }
         }
@@ -328,11 +316,28 @@ void Nhanvat::CheckMap(Map& map_data)
 }
 bool Nhanvat::IsDead(const Map& map_data ) const
 {
-    // Kiểm tra nếu nhân vật rơi xuống dưới map
     return (y_pos_ > map_data.max_y_);
 }
 bool Nhanvat::IsDeadByExplosion(const Explosion& explosion) const
 {
-    // Chỉ kiểm tra trục X
     return (x_pos_ <= explosion.GetXPos() + EXPLOSION_WIDTH);
+}
+bool Nhanvat::CheckCollisionWithBot(const Bot& bot) const
+{
+    int player_left = x_pos_;
+    int player_right = x_pos_ + width_frame_;
+    int player_top = y_pos_;
+    int player_bottom = y_pos_ + height_frame_;
+
+    int bot_left = bot.get_x_pos();
+    int bot_right = bot.get_x_pos() + bot.get_width_frame();
+    int bot_top = bot.get_y_pos();
+    int bot_bottom = bot.get_y_pos() + bot.get_height_frame();
+
+    if (player_right - 2 * OFFSET_X > bot_left && player_left - 2 * OFFSET_X < bot_right &&
+        player_bottom - 2 * OFFSET_Y > bot_top && player_top - 2 * OFFSET_Y < bot_bottom)
+    {
+        return true;
+    }
+    return false;
 }

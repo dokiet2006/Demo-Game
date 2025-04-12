@@ -3,6 +3,8 @@
 
 #include <windows.h>
 #include <string>
+#include <vector>
+#include <algorithm>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -23,7 +25,8 @@ static bool g_game_over = false;
 const int RENDER_DRAW_COLOR = 0xff;
 
 
-enum MenuState {
+enum MenuState
+{
     MENU_PLAY = 0,
     MENU_EXIT = 1,
     MENU_TOTAL = 2 // Tổng số mục trong menu
@@ -32,6 +35,9 @@ enum MenuState {
 #define TILE_SIZE 64
 #define MAX_MAP_X 400
 #define MAX_MAP_Y 10
+
+#define OFFSET_X 10
+#define OFFSET_Y 2
 
 #define BLANK_TILE 0
 

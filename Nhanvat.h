@@ -7,12 +7,14 @@
 #include "Explosion.h"
 #include "Music.h"
 #include "Map.h"
+#include "Bot.h"
 
 #define ROI_SPEED 4
 #define ROI_MAX 10
 #define PLAYER_SPEED 10
 #define PLAYER_JUMP_VAL 40
 
+class Bot;
 class Explosion;
 class Nhanvat : public Object
 {
@@ -39,6 +41,8 @@ public:
     bool IsDead(const Map& map_data) const ;
     bool IsDeadByExplosion(const Explosion& explosion) const;
 
+    bool CheckCollisionWithBot(const Bot& bot) const;
+
     void Reset(const Map& map_data);
     int GetPos() const { return x_pos_;}
 
@@ -60,6 +64,7 @@ private:
 
     int map_x_;
     int map_y_;
+    int max_random_x;
 };
 
 #endif // NHAN_VAT_H

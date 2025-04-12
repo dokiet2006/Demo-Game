@@ -4,7 +4,6 @@
 Music::Music() {
     menu_music_ = nullptr;
     game_music_ = nullptr;
-//    explosion_sound_ = nullptr;
     move_sound_ = nullptr;
     jump_sound_ = nullptr;
     collision_sound_ = nullptr;
@@ -28,17 +27,11 @@ bool Music::Init() {
 bool Music::LoadSounds() {
     menu_music_ = Mix_LoadMUS("sound/menu_music.mp3");
     game_music_ = Mix_LoadMUS("sound/game_music.mp3");
-//    explosion_sound_ = Mix_LoadMUS("sound/explosion.mp3");
     jump_sound_ = Mix_LoadWAV("sound/jump.wav");
     collision_sound_ = Mix_LoadWAV("sound/collision.wav");
     fall_sound_ = Mix_LoadWAV("sound/fall.wav");
     restart_sound_ = Mix_LoadWAV("sound/restart.wav");
 
-//    if (!menu_music_ || !game_music_ || !explosion_sound_ || !move_sound_ ||
-//        !jump_sound_ || !collision_sound_ || !fall_sound_ || !restart_sound_) {
-//        std::cout << "Failed to load sounds: " << Mix_GetError() << std::endl;
-//        return false;
-//    }
     return true;
 }
 

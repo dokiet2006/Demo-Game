@@ -29,7 +29,6 @@ public:
     void PlayFallSound();
     void PlayRestartSound();
 
-    // Giải phóng tài nguyên âm thanh
     void FreeSounds();
 
 private:

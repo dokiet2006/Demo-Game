@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Bot.cpp" />
+		<Unit filename="Bot.h" />
 		<Unit filename="Explosion.cpp" />
 		<Unit filename="Explosion.h" />
 		<Unit filename="Function.cpp" />
