@@ -13,7 +13,7 @@
 	<SDL_mixer.h>
 	<iostream>
 
-1744421658 source:c:\gamesdl2\main.cpp
+1744552480 source:c:\gamesdl2\main.cpp
 	<fstream>
 	"Function.h"
 	"Object.h"
@@ -78,14 +78,14 @@
 1744421486 source:c:\gamesdl2\menu.cpp
 	"Menu.h"
 
-1743353135 c:\gamesdl2\menu.h
+1744551634 c:\gamesdl2\menu.h
 	"Function.h"
 	"Object.h"
 
-1743562294 source:c:\gamesdl2\text.cpp
+1744552033 source:c:\gamesdl2\text.cpp
 	"Text.h"
 
-1743349237 c:\gamesdl2\text.h
+1744552029 c:\gamesdl2\text.h
 	"Function.h"
 	<string>
 	<SDL_ttf.h>
@@ -99,7 +99,7 @@
 	"Nhanvat.h"
 	"Map.h"
 
-1743853380 c:\gamesdl2\music.h
+1744551635 c:\gamesdl2\music.h
 	<SDL.h>
 	<SDL_mixer.h>
 	<string>

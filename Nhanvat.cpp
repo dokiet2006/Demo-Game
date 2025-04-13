@@ -334,7 +334,7 @@ bool Nhanvat::CheckCollisionWithBot(const Bot& bot) const
     int bot_top = bot.get_y_pos();
     int bot_bottom = bot.get_y_pos() + bot.get_height_frame();
 
-    if (player_right - 2 * OFFSET_X > bot_left && player_left - 2 * OFFSET_X < bot_right &&
+    if (player_right - 2 * OFFSET_X > bot_left && player_left + 2 * OFFSET_X < bot_right &&
         player_bottom - 2 * OFFSET_Y > bot_top && player_top - 2 * OFFSET_Y < bot_bottom)
     {
         return true;

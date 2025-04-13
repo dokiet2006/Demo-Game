@@ -268,7 +268,6 @@ while (!is_quit) {
 
         explosionEffect.Show(g_screen, map_data.start_x_, music);
 
-        // Hiển thị điểm số
         std::string score_str = "Score: " + std::to_string(g_score);
         score_text.RenderText(g_screen, score_str, 20, 20, text_color);
 

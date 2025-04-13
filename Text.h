@@ -1,4 +1,3 @@
-// Text.h
 #ifndef TEXT_H
 #define TEXT_H
 
@@ -6,7 +5,8 @@
 #include <string>
 #include <SDL_ttf.h>
 
-class Text {
+class Text
+{
 public:
     Text();
     ~Text();
