@@ -11,12 +11,12 @@ public:
 
     bool LoadMenu(SDL_Renderer* screen);
     void RenderMenu(SDL_Renderer* screen);
-    int HandleInput(SDL_Event& event); // Trả về lựa chọn của người dùng
+    int HandleInput(SDL_Event& event);
 
 private:
-    Object menu_background; // Thêm background cho menu
-    Object menu_items[MENU_TOTAL]; // Mảng chứa các mục menu
-    int selected_item_; // Mục đang được chọn
+    Object menu_background;
+    Object menu_items[MENU_TOTAL];
+    int selected_item_;
 };
 
 #endif // MENU_H_
